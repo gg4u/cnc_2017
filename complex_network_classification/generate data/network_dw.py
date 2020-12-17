@@ -38,6 +38,7 @@ def word_2_vec(sequences, dim):
     return (np.mat(em_vec),model,nodes)
 
 #二维数据栅格化
+#Rasterizzazione dei dati bidimensionali
 def img_max(lowdim,size):
 
     #确定二维数据的x，y范围，分为48个
@@ -50,16 +51,18 @@ def img_max(lowdim,size):
     y_scale = np.linspace(ymin, ymax, size)
 
     #生成一个空48*48矩阵
+    #Genera una matrice 48 * 48 vuota
     new_mat = np.zeros((size, size))
 
     #根据索引填充48*48矩阵
+    #Riempi la matrice 48 * 48 in base all'indice
     for each in lowdim:
         x = each[0]
         y = each[1]
         i = 0
         j = 0
         for idx, each in enumerate(x_scale):
-            global i
+            #global i
             if idx < len(x_scale) - 1:
                 if x >= each and x < x_scale[idx + 1]:
                     i = idx
@@ -67,7 +70,7 @@ def img_max(lowdim,size):
                 if x == each:
                     i = idx
         for idx, each in enumerate(y_scale):
-            global j
+            #global j
             if idx < len(y_scale) - 1:
                 if y > each and y < y_scale[idx + 1]:
                     j = idx
@@ -80,12 +83,14 @@ def img_max(lowdim,size):
     return new_mat
 
 #二维数据栅格化并记录位置
+#Rasterizza i dati 2D e registra la posizione
 def img_max_pos(node_vec,size):
     lowdim = []
     for each in node_vec:
         lowdim.append(each[0])
 
     #确定二维数据的x，y范围，分为48个
+    #Determina l'intervallo x, y dei dati bidimensionali, diviso in 48
     xmax = np.amax(lowdim, axis=0)[0]
     ymax = np.amax(lowdim, axis=0)[1]
     xmin = np.amin(lowdim, axis=0)[0]
@@ -95,17 +100,19 @@ def img_max_pos(node_vec,size):
     y_scale = np.linspace(ymin, ymax, size)
 
     #生成一个空48*48矩阵
+    #Genera una matrice 48 * 48 vuota
     new_mat = np.zeros((size, size))
 
     pos_info = []
     #根据索引填充48*48矩阵
+    #Riempi la matrice 48 * 48 in base all'indice
     for ind, each in enumerate(lowdim):
         x = each[0]
         y = each[1]
         i = 0
         j = 0
         for idx, each in enumerate(x_scale):
-            global i
+            #global i
             if idx < len(x_scale) - 1:
                 if x >= each and x < x_scale[idx + 1]:
                     i = idx
@@ -113,7 +120,7 @@ def img_max_pos(node_vec,size):
                 if x == each:
                     i = idx
         for idx, each in enumerate(y_scale):
-            global j
+            #global j
             if idx < len(y_scale) - 1:
                 if y > each and y < y_scale[idx + 1]:
                     j = idx
@@ -130,10 +137,13 @@ def img_max_pos(node_vec,size):
 
 def imconv(image_array,filt):
     #计算卷积，原图像与算子卷积后的结果矩阵
+    #Calcola la convoluzione, 
+    #la matrice dei risultati dopo l'immagine originale 
+    #e la convoluzione dell'operatore
     #input:
-        #image_array:原始图片矩阵
-        #filter:filter数据
-    #return：卷积之后的图片矩阵
+        #image_array:原始图片矩阵 Matrice dell'immagine originale
+        #filter:filter数据 dati
+    #return：卷积之后的图片矩阵 Matrice dell'immagine dopo la convoluzione
     dim1,_ = image_array.shape
     dim2,_ = filt.shape
     size = dim1 - dim2 + 1
@@ -146,7 +156,9 @@ def imconv(image_array,filt):
 
 def order_conv1(im):
     #将conv1的值排序
+    #Ordina i valori di conv1
     #pos_lists:图片的像素点位置以及对应的值 [([],value1),([],value2)...]
+    #La posizione dei pixel dell'immagine e il valore corrispondente
     #input：
         #im:卷积计算之后的图片矩阵
     #return：排序之后的pos_lists
